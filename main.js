@@ -271,13 +271,13 @@ class GoE extends utils.Adapter {
                     case this.config.solarPowerForeignObjectID:
                     case this.config.houseBatteryForeignObjectID:
                     case this.config.houseConsumptionForeignObjectID:
-                        if(this.ackObj[id] === false) {
-                            this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
-                            this.calculateFromForeignObjects(id);
-                        } else {
-                            this.log.silly("Will NOT work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
-                        }
-                        break;
+                        // if(this.ackObj[id] === false) {
+                        //    this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
+                           this.calculateFromForeignObjects(id);
+                        // } else {
+                           this.log.silly("Du kokosch kannst mich gern haben - MQTT Power with " + id + " even if ack is " + state.ack + " and should be " + this.ackObj[id]);
+                        // }
+                        // break;
                     default:
                         this.log.error("Not developed function to write " + id + " with state " + state.val.toString());
                 }
@@ -291,7 +291,8 @@ class GoE extends utils.Adapter {
                             this.log.silly("Will work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
                             this.calculateFromForeignObjects(id);
                         } else {
-                            this.log.silly("Will NOT work on " + id + " becase ack is " + state.ack + " and should be " + this.ackObj[id]);
+                            this.log.silly("Ack = true else loop aber jo mei, gib ihm poidl - WE WILL ANYHOW work on " + id + " EVEN IF ack is " + state.ack + " and should be " + this.ackObj[id]);
+                            this.calculateFromForeignObjects(id);
                         }
                         break;
                 }
@@ -869,8 +870,8 @@ class GoE extends utils.Adapter {
                 return;
             }
 
-            let availWatts = 0;
-            availWatts += (await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID));
+            // NO MORE SET TO ZERO --- let availWatts = 0;
+            let availWatts += await this.getNumberFromForeignObjectId(this.config.solarPowerForeignObjectID);
             if(this.config.solarPowerForeignObjectNegate) {
                 availWatts = availWatts * -1;
                 this.log.silly("Negate watts of Solar new: " + availWatts);
